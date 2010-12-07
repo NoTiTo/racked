@@ -15,9 +15,9 @@ Jeweler::Tasks.new do |gem|
   gem.name = "racked"
   gem.homepage = "http://github.com/NoTiTo/racked"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "noto@notomodungwa.com"
+  gem.summary = "Rackspace mailbox management API "
+  gem.description = "Allows you to manage your rackspace hosted mailboxes, eg. create a new mailbox."
+  gem.email = "notomodungwa@gmail.com"
   gem.authors = ["Noto Modungwa"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)

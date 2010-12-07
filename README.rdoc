@@ -17,3 +17,21 @@ Description goes here.
 Copyright (c) 2010 Noto Modungwa. See LICENSE.txt for
 further details.
 
+== Directions
+
+#gem install racked
+
+In your config file e.g "mailapi.yml"
+server: 'api.emailsrvr.com'
+version_prefix: '/v0'
+user_key: 'xxxxxxx'
+secret_hash: 'xxxxxxx
+
+In your initializer or before you call the API
+require 'yaml' #depending on your situation
+MAIL_CFG = YAML::load(File.read('path_to/mailapi.yml'))
+
+== Usage:
+
+api = Racked.new
+mailboxes = api.get_mailmoxes # => [{"name"=>"tomthumb", "displayName"=>"Tom Thumb"}, {"name"=>"dicktracy", "displayName"=>"Dick Tracy"}]
