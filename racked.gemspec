@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/racked.rb",
     "lib/racked/server.rb",
+    "racked.gemspec",
     "test/helper.rb",
     "test/test_racked.rb"
   ]
