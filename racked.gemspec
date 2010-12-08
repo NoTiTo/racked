@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{racked}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Noto Modungwa"]
-  s.date = %q{2010-12-07}
+  s.date = %q{2010-12-08}
   s.description = %q{Allows you to manage your rackspace hosted mailboxes, eg. create a new mailbox.}
   s.email = %q{notomodungwa@gmail.com}
   s.extra_rdoc_files = [
