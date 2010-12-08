@@ -3,13 +3,16 @@ require 'json'
 require  './lib/racked/server.rb'
 
 class Mailbox
-
+  
+  attr_accessor :attributes
+  
   def initialize(attributes)
     @attributes = attributes #JSON.parse(json)
+    puts @attributes.keys.inspect
   end
 
   def method_missing(method, *args)
-    #x = method.to_s.camelize(:lower)
+    #x = name.to_s.camelize(:lower)
     x = method.to_s
     #return @attributes[access_key] if(@attributes.keys.include?(access_key))
    if(@attributes.keys.include?(x))
@@ -45,13 +48,20 @@ class Racked
     # end
     mailboxes = []
     response["rsMailboxes"].each do |mailbox|
-      mailboxes << Mailbox.new(mailbox)
+      puts 'mailbox - ' + mailbox["name"]
+      #mailboxes << Mailbox.new(mailbox)
+      mailboxes << mailbox
     end
   end
   
-  def create_mailbox
+  def create_mailbox(msisdn_number, fields_array)
     #create a customer mailbox
-    
+    response = @server.post  '/customers/856863/domains/econetmail.com/rs/mailboxes/' + msisdn_number, fields_array
+    # puts response.inspect
+    # puts response['x-error-message']
+    # puts response.body.inspect
+    return response
+    #response = JSON.parse(response.body )
   end
 
 end

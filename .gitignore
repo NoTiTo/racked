@@ -44,3 +44,7 @@ pkg
 # For config
 config
 config/*
+
+#Own testing
+test/racked
+test/racked/*
