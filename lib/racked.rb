@@ -14,12 +14,12 @@ class Mailbox
   def method_missing(method, *args)
     #x = name.to_s.camelize(:lower)
     x = method.to_s
-    #return @attributes[access_key] if(@attributes.keys.include?(access_key))
-   if(@attributes.keys.include?(x))
-     @attributes[x]
-   else
-     super
-   end
+    #return @attributes[access_key] if(@attributes.keys.include?(access_key))
+    if(@attributes.keys.include?(x))
+      @attributes[x]
+    else
+      super
+    end
   end
   
 end
@@ -32,6 +32,10 @@ class Racked
     
     @server = Server.new(MAIL_CFG["server"], MAIL_CFG["version_prefix"], MAIL_CFG["user_key"], MAIL_CFG["secret_hash"])
     @server.xml_format
+  end
+  
+  def get_domain_info
+    response = @server.get  '/customers/856863/domains/econetmail.com', @server.json_format
   end
   
   def get_mailboxes(size=50, offset=0)
