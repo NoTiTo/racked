@@ -5,6 +5,7 @@ require 'racked/server.rb' #for release
 
 class RackMailbox
   
+  
   attr_accessor :attributes
   
   def initialize(attributes)
