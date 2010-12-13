@@ -3,7 +3,7 @@ require 'json'
 #require  './lib/racked/server.rb' #for dev
 require 'racked/server.rb' #for release
 
-class Mailbox
+class RackMailbox
   
   attr_accessor :attributes
   
