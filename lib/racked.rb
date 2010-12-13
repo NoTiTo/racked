@@ -42,7 +42,7 @@ class Racked
   
   def get_mailboxes(size=50, offset=0)
     #get customer list
-    response = @server.get  '/customers/856863/domains/econetmail.com/rs/mailboxes/?size=#{size}&offset=#{offset}', @server.json_format
+    response = @server.get  '/customers/856863/domains/econetmail.com/rs/mailboxes/?size=' + size.to_s + '&offset=' + offset.to_s, @server.json_format
     puts response.inspect
     # puts response['x-error-message']
     # puts response.body
