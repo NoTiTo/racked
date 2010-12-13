@@ -1,6 +1,7 @@
 # coding: utf-8
 require 'json'
-require  './lib/racked/server.rb'
+#require  './lib/racked/server.rb' #for dev
+require 'racked/server.rb' #for release
 
 class Mailbox
   
