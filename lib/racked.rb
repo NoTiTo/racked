@@ -34,9 +34,9 @@ class Racked
     @server.xml_format
   end
   
-  def get_mailboxes
+  def get_mailboxes(size=50, offset=0)
     #get customer list
-    response = @server.get  '/customers/856863/domains/econetmail.com/rs/mailboxes', @server.json_format
+    response = @server.get  '/customers/856863/domains/econetmail.com/rs/mailboxes/?size=#{size}&offset=#{offset}', @server.json_format
     puts response.inspect
     # puts response['x-error-message']
     # puts response.body
