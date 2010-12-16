@@ -62,7 +62,13 @@ class Server
 # 
   def make_request request, uri
     response = Net::HTTP::start(uri.host, uri.port)  do |http|
-      http.request request
+      begin
+        http.request request
+      rescue Exception => e
+        puts e.message
+        puts e.backtrace.inspect
+        retry
+      end
     end
     
     response
