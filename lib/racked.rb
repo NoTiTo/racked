@@ -1,6 +1,6 @@
 # coding: utf-8
 require 'json'
-#require  './lib/racked/server.rb' #for dev
+# require  './lib/racked/server.rb' #for dev
 require 'racked/server.rb' #for release
 
 class RackMailbox
@@ -63,6 +63,16 @@ class Racked
   def create_mailbox(msisdn_number, fields_array)
     #create a customer mailbox
     response = @server.post  '/customers/856863/domains/econetmail.com/rs/mailboxes/' + msisdn_number, fields_array
+    # puts response.inspect
+    # puts response['x-error-message']
+    # puts response.body.inspect
+    return response
+    #response = JSON.parse(response.body )
+  end
+
+  def update_mailbox(msisdn_number, fields_array)
+    #create a customer mailbox
+    response = @server.put  '/customers/856863/domains/econetmail.com/rs/mailboxes/' + msisdn_number, fields_array
     # puts response.inspect
     # puts response['x-error-message']
     # puts response.body.inspect
