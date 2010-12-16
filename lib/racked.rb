@@ -59,6 +59,21 @@ class Racked
       mailboxes << mailbox
     end
   end
+  def get_mailbox_details(mailbox)
+    #get mailbox details
+    response = @server.get  '/customers/856863/domains/econetmail.com/rs/mailboxes/' + mailbox, @server.json_format
+    puts response.inspect
+    puts response['x-error-message']
+    # response = JSON.parse(response)
+    puts response.code
+    puts response.body
+    # puts response.inspect
+    #TO DO: error checking
+    # returning [] do |mailboxes|
+    #   response["rsMailboxes"].each {|c| mailboxes << Mailbox.new(c) }
+    # end
+    return response
+  end
   
   def create_mailbox(msisdn_number, fields_array)
     #create a customer mailbox
