@@ -19,6 +19,8 @@ Jeweler::Tasks.new do |gem|
   gem.description = "Allows you to manage your rackspace hosted mailboxes, eg. create a new mailbox."
   gem.email = "notomodungwa@gmail.com"
   gem.authors = ["Noto Modungwa"]
+  gem.files = FileList['lib/**/*.rb', 'bin/*', '[A-Z]*', 'test/**/*'].to_a
+  gem.require_paths = ["lib", "lib/soap_api"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
   #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
