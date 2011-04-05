@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{racked}
-  s.version = "0.7.0"
+  s.version = "0.9.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Noto Modungwa"]
-  s.date = %q{2010-12-17}
+  s.date = %q{2011-04-06}
   s.description = %q{Allows you to manage your rackspace hosted mailboxes, eg. create a new mailbox.}
   s.email = %q{notomodungwa@gmail.com}
   s.extra_rdoc_files = [
@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
-    ".document",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
@@ -26,13 +25,16 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/racked.rb",
     "lib/racked/server.rb",
-    "racked.gemspec",
+    "lib/soap_api/mailaccounts.rb",
+    "lib/soap_api/mailaccountsClient.rb",
+    "lib/soap_api/mailaccountsDriver.rb",
+    "lib/soap_api/mailaccountsMappingRegistry.rb",
     "test/helper.rb",
     "test/test_racked.rb"
   ]
   s.homepage = %q{http://github.com/NoTiTo/racked}
   s.licenses = ["MIT"]
-  s.require_paths = ["lib"]
+  s.require_paths = ["lib", "lib/soap_api"]
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Rackspace mailbox management API}
   s.test_files = [
