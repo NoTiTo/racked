@@ -110,9 +110,9 @@ class Racked
   end
 
   def create_mailbox(options)
-    check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_array])
+    check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_hash])
     #create a customer mailbox
-    response = @server.post  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @data_fields_array
+    response = @server.post  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @data_fields_hash
     # puts response.inspect
     # puts response['x-error-message']
     # puts response.body.inspect
@@ -121,9 +121,9 @@ class Racked
   end
 
   def update_mailbox(options)
-    check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_array])
+    check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_hash])
     #update a customer mailbox
-    response = @server.put  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @data_fields_array
+    response = @server.put  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @data_fields_hash
     # puts response.inspect
     # puts response['x-error-message']
     # puts response.body.inspect
@@ -133,7 +133,7 @@ class Racked
   
   def delete_mailbox(options)
     #delete a customer mailbox
-    check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_array])
+    check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox])
     response = @server.delete  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}"
     # puts response.inspect
     # puts response['x-error-message']
@@ -142,6 +142,13 @@ class Racked
     #response = JSON.parse(response.body )
   end
   
+  def add_customer(options)
+    check_options(options, [:data_fields_hash])
+    #add a customer account
+    response = @server.post  "/customers", @data_fields_hash
+    return response
+  end
+
   private
   def check_account_details(account_details)
     raise ArgumentError, 'Argument missing! account_details[:customer_number] missing.' unless account_details[:customer_number].empty? || account_details.include?(:customer_number)
@@ -157,10 +164,11 @@ class Racked
     end
     raise ArgumentError, "Argument(s) missing! You need to supply :#{missing_options.join(", :")}" unless missing_options.empty?
 
-    @customer_number = supplied_options_hash[:customer_number]
-    @domain          = supplied_options_hash[:domain]
-    @mailbox_type    = supplied_options_hash[:mailbox_type]
-    @mailbox         = supplied_options_hash[:mailbox]
+    @customer_number  = supplied_options_hash[:customer_number]
+    @domain           = supplied_options_hash[:domain]
+    @mailbox_type     = supplied_options_hash[:mailbox_type]
+    @mailbox          = supplied_options_hash[:mailbox]
+    @data_fields_hash = supplied_options_hash[:data_fields_hash]
 
   end
   
