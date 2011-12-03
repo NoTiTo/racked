@@ -42,7 +42,7 @@ class Racked
     @secret_hash = options[:secret_hash]
     #read config file
     # @server = Server.new(MAIL_CFG["server"], MAIL_CFG["version_prefix"], MAIL_CFG["user_key"], MAIL_CFG["secret_hash"])
-    @server = Server.new(options[:server], options[:version_prefix], options[:user_key], options[:secret_hash])
+    @server = Server.new(options[:server_host], options[:version_prefix], options[:user_key], options[:secret_hash])
     @server.xml_format
         
   end
