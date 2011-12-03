@@ -50,9 +50,11 @@ class Server
     http_response = make_request request, uri
   end
   
-  def post(url_string, fields_hash)
+  def post(url_string, fields_hash, format)
     uri = full_uri(url_string)
-    request = Net::HTTP::Post.new(request_uri(uri), prepared_headers)
+    headers = prepared_headers
+    headers['Accept'] = format
+    request = Net::HTTP::Post.new(request_uri(uri), headers)
     request.set_form_data(fields_hash)
     http_response = make_request request, uri
   end

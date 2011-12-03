@@ -112,7 +112,7 @@ class Racked
   def create_mailbox(options)
     check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_hash])
     #create a customer mailbox
-    response = @server.post  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @data_fields_hash
+    response = @server.post  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @data_fields_hash, @server.json_format
     # puts response.inspect
     # puts response['x-error-message']
     # puts response.body.inspect
@@ -145,7 +145,7 @@ class Racked
   def add_customer(options)
     check_options(options, [:data_fields_hash])
     #add a customer account
-    response = @server.post  "/customers", @data_fields_hash
+    response = @server.post  "/customers", @data_fields_hash, @server.json_format
     return response
   end
 
