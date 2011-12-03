@@ -32,20 +32,32 @@ end
 class Racked
   #include Singleton
   
-  def initialize
+  attr_accessor :server_host, :version_prefix, :user_key, :secret_hash
+  
+  def initialize(options)
+    check_options(options, [:server_host, :version_prefix, :user_key, :secret_hash])
+    @server_host = options[:server_host]
+    @version_prefix = options[:version_prefix]
+    @user_key = options[:user_key]
+    @secret_hash = options[:secret_hash]
     #read config file
-    
-    @server = Server.new(MAIL_CFG["server"], MAIL_CFG["version_prefix"], MAIL_CFG["user_key"], MAIL_CFG["secret_hash"])
+    # @server = Server.new(MAIL_CFG["server"], MAIL_CFG["version_prefix"], MAIL_CFG["user_key"], MAIL_CFG["secret_hash"])
+    @server = Server.new(options[:server], options[:version_prefix], options[:user_key], options[:secret_hash])
     @server.xml_format
+        
   end
   
-  def get_domain_info
-    response = @server.get  '/customers/856863/domains/econetmail.com', @server.json_format
+  def get_domain_info(options)
+    check_options(options, [:domain, :customer_number])
+    response = @server.get  "/customers/#{@customer_number}/domains/#{@domain}", @server.json_format
   end
   
   def get_mailboxes(size=50, offset=0)
+    check_options(options, [:domain, :customer_number, :mailbox_type])
+    size = options[:size] || 50
+    offset = options[:offset] || 0
     #get customer list
-    response = @server.get  '/customers/856863/domains/econetmail.com/rs/mailboxes/?size=' + size.to_s + '&offset=' + offset.to_s, @server.json_format
+    response = @server.get  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/?size=" + size.to_s + '&offset=' + offset.to_s, @server.json_format
     puts response.inspect
     # puts response['x-error-message']
     # puts response.body
@@ -62,10 +74,13 @@ class Racked
       mailboxes << mailbox
     end
   end
-  def get_mailbox_details(mailbox, account_details = {})
-    self.check_account_details(account_details)
+  def get_mailbox_details(options)
+    check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox])
+    
+    #do we need account details here?
+    # self.check_account_details(options[:account_details])
     #get mailbox details
-    response = @server.get  '/customers/856863/domains/econetmail.com/rs/mailboxes/' + mailbox, @server.json_format
+    response = @server.get  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/" + @mailbox, @server.json_format
     puts response.inspect
     puts response['x-error-message']
     # response = JSON.parse(response)
@@ -79,21 +94,25 @@ class Racked
     return response
   end
   
-  def get_last_login(account_details = {}, mailbox)
-    raise ArgumentError, "account_details hash must be supplied." unless !account_details.empty?
+  def get_last_login(account_details_for_soap = {}, mailbox)
+    #TO DO: need to rethink
+    check_options(options, [:mailbox])
+    
+    self.account_details_for_soap(options[:account_details])
     driver = UtilsSoapPort.new
     # driver.wiredump_dev = STDOUT
 
-    res = driver.GetUserLastLogin(account_details[:resellerUsername], account_details[:resellerPassword], account_details[:hostName], mailbox, account_details[:lastlogin])
+    res = driver.GetUserLastLogin(@account_details[:resellerUsername], @account_details[:resellerPassword], @account_details[:hostName], @mailbox, @account_details[:lastlogin])
     # if res[1].class == String && !res[1].empty?
     #   puts "yes"
     # end
     return res
   end
 
-  def create_mailbox(msisdn_number, fields_array)
+  def create_mailbox(options)
+    check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_array])
     #create a customer mailbox
-    response = @server.post  '/customers/856863/domains/econetmail.com/rs/mailboxes/' + msisdn_number, fields_array
+    response = @server.post  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @data_fields_array
     # puts response.inspect
     # puts response['x-error-message']
     # puts response.body.inspect
@@ -101,9 +120,10 @@ class Racked
     #response = JSON.parse(response.body )
   end
 
-  def update_mailbox(msisdn_number, fields_array)
-    #create a customer mailbox
-    response = @server.put  '/customers/856863/domains/econetmail.com/rs/mailboxes/' + msisdn_number, fields_array
+  def update_mailbox(options)
+    check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_array])
+    #update a customer mailbox
+    response = @server.put  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @data_fields_array
     # puts response.inspect
     # puts response['x-error-message']
     # puts response.body.inspect
@@ -111,9 +131,10 @@ class Racked
     #response = JSON.parse(response.body )
   end
   
-  def delete_mailbox(msisdn)
-    #create a customer mailbox
-    response = @server.delete  '/customers/856863/domains/econetmail.com/rs/mailboxes/' + msisdn
+  def delete_mailbox(options)
+    #delete a customer mailbox
+    check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_array])
+    response = @server.delete  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}"
     # puts response.inspect
     # puts response['x-error-message']
     # puts response.body.inspect
@@ -125,6 +146,22 @@ class Racked
   def check_account_details(account_details)
     raise ArgumentError, 'Argument missing! account_details[:customer_number] missing.' unless account_details[:customer_number].empty? || account_details.include?(:customer_number)
     raise ArgumentError, 'Argument missing! account_details[:domain_name] missing.' unless account_details[:domain_name].empty? || account_details.include?(:domain_name)
+    @account_details = account_details
+  end
+  
+  def check_options(supplied_options_hash, options_to_check)
+    supplied_options_hash[:mailbox_type] ||= "rs"
+    missing_options = []
+    options_to_check.each do |opt|
+      missing_options << opt if !supplied_options_hash[opt] || supplied_options_hash[opt].empty?
+    end
+    raise ArgumentError, "Argument(s) missing! You need to supply :#{missing_options.join(", :")}" unless missing_options.empty?
+
+    @customer_number = supplied_options_hash[:customer_number]
+    @domain          = supplied_options_hash[:domain]
+    @mailbox_type    = supplied_options_hash[:mailbox_type]
+    @mailbox         = supplied_options_hash[:mailbox]
+
   end
   
 

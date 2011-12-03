@@ -1,3 +1,4 @@
+$:.unshift(File.dirname(__FILE__))
 require 'mailaccounts.rb'
 require 'mailaccountsMappingRegistry.rb'
 require 'soap/rpc/driver'
