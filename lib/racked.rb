@@ -77,8 +77,6 @@ class Racked
   def get_mailbox_details(options)
     check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox])
     
-    #do we need account details here?
-    # self.check_account_details(options[:account_details])
     #get mailbox details
     response = @server.get  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/" + @mailbox, @server.json_format
     puts response.inspect
