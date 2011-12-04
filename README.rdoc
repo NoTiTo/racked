@@ -21,17 +21,28 @@ further details.
 
 #gem install racked
 
-In your config file e.g "mailapi.yml"
-server: 'api.emailsrvr.com'
-version_prefix: '/v0'
-user_key: 'xxxxxxx'
-secret_hash: 'xxxxxxx
+@valid_attr = {
+  :server_host    => 'api.emailsrvr.com',
+  :version_prefix => '/v0',
+  :user_key       => 'xxxxxxx',
+  :secret_hash    => 'xxxxxxx',
+}
 
-In your initializer or before you call the API
-require 'yaml' #depending on your situation
-MAIL_CFG = YAML::load(File.read('path_to/mailapi.yml'))
 
 == Usage:
 
 api = Racked.new
-mailboxes = api.get_mailmoxes # => [{"name"=>"tomthumb", "displayName"=>"Tom Thumb"}, {"name"=>"dicktracy", "displayName"=>"Dick Tracy"}]
+
+Create Mailbox
+ops = {:domain=>"foobar.com", 
+		:mailbox_type    =>"ex", 
+		:customer_number =>"xxxxx", 
+		:mailbox=>"tthumb", 
+		:data_fields_hash => {:password => '10G0t0Sa', :displayName => "Tom Thumb", :size => "2048"}
+	  }
+api.create_mailbox(opts)
+
+Add Customer Account
+opts = {:data_fields_hash => {:name => "Foo Bar Corp", :referenceNumber => "0001"}}
+api.add_customer(opts)
+...
