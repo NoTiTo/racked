@@ -146,6 +146,12 @@ class Racked
     response = @server.post  "/customers", @data_fields_hash, @server.json_format
     return response
   end
+  def add_domain(options)
+    check_options(options, [:domain, :customer_number, :data_fields_hash])
+    #add a customer account
+    response = @server.post  "/customers/#{@customer_number}/domains/#{@domain}", @data_fields_hash, @server.json_format
+    return response
+  end
 
   private
   def check_account_details(account_details)

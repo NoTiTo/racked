@@ -21,28 +21,39 @@ further details.
 
 #gem install racked
 
+
+== Usage:
+
 @valid_attr = {
   :server_host    => 'api.emailsrvr.com',
   :version_prefix => '/v0',
   :user_key       => 'xxxxxxx',
   :secret_hash    => 'xxxxxxx',
 }
-
-
-== Usage:
-
-api = Racked.new
-
-Create Mailbox
-ops = {:domain=>"foobar.com", 
-		:mailbox_type    =>"ex", 
-		:customer_number =>"xxxxx", 
-		:mailbox=>"tthumb", 
-		:data_fields_hash => {:password => '10G0t0Sa', :displayName => "Tom Thumb", :size => "2048"}
-	  }
-api.create_mailbox(opts)
+api = Racked.new(@valid_attr)
 
 Add Customer Account
 opts = {:data_fields_hash => {:name => "Foo Bar Corp", :referenceNumber => "0001"}}
 api.add_customer(opts)
+
+Add Domain
+opts = {
+		:domain           => "foobar.com", 
+		:customer_number  => "xxxxx", 
+		:data_fields_hash => { 
+								"serviceType"            => "exchange", # Domain service type. "rsemail" = "Rackspace Email Only". "exchange" = "Exchange Only". "both" = "Rackspace Email and Exchange"
+								:exchangeMaxNumMailboxes => "5" 
+							}
+		}
+
+Create Mailbox
+ops = {
+		:domain           => "foobar.com", 
+		:mailbox_type     => "ex", 
+		:customer_number  => "xxxxx", 
+		:mailbox          => "tthumb", 
+		:data_fields_hash => {:password => '10G0t0Sa', :displayName => "Tom Thumb", :size => "2048"}
+	  }
+api.create_mailbox(opts)
+
 ...
