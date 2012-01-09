@@ -132,7 +132,7 @@ class Racked
   def delete_mailbox(options)
     #delete a customer mailbox
     check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox])
-    response = @server.delete  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}"
+    response = @server.delete  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @server.json_format
     # puts response.inspect
     # puts response['x-error-message']
     # puts response.body.inspect

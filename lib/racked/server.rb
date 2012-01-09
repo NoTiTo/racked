@@ -37,9 +37,11 @@ class Server
     http_response = make_request request, uri
   end
   
-  def delete(url_string)
+  def delete(url_string, format)
     uri = full_uri(url_string)
-    request = Net::HTTP::Delete.new(request_uri(uri), prepared_headers)
+    headers = prepared_headers
+    headers['Accept'] = format
+    request = Net::HTTP::Delete.new(request_uri(uri), headers)
     http_response = make_request request, uri
   end
   
