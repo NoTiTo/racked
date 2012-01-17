@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Noto Modungwa"]
-  s.date = %q{2012-01-09}
+  s.date = %q{2012-01-17}
   s.description = %q{Allows you to manage your rackspace hosted mailboxes, eg. create a new mailbox.}
   s.email = %q{notomodungwa@gmail.com}
   s.extra_rdoc_files = [
