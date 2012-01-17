@@ -146,10 +146,20 @@ class Racked
     response = @server.post  "/customers", @data_fields_hash, @server.json_format
     return response
   end
+  def delete_customer(options)
+    check_options(options, [:customer_number])
+    response = @server.delete  "/customers/#{@customer_number}", @server.json_format
+    return response
+  end
   def add_domain(options)
     check_options(options, [:domain, :customer_number, :data_fields_hash])
-    #add a customer account
+    #add a domain
     response = @server.post  "/customers/#{@customer_number}/domains/#{@domain}", @data_fields_hash, @server.json_format
+    return response
+  end
+  def delete_domain(options)
+    check_options(options, [:domain, :customer_number])
+    response = @server.delete  "/customers/#{@customer_number}/domains/#{@domain}", @server.json_format
     return response
   end
 

@@ -87,6 +87,7 @@ class Server
     if ! uri.query.nil?
       request = request + '?' + uri.query
     end
+    p [:request_uri, request]
     request
   end
   
