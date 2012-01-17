@@ -121,7 +121,7 @@ class Racked
   def update_mailbox(options)
     check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_hash])
     #update a customer mailbox
-    response = @server.put  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @data_fields_hash
+    response = @server.put  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/#{@mailbox}", @data_fields_hash, @server.json_format
     # puts response.inspect
     # puts response['x-error-message']
     # puts response.body.inspect
