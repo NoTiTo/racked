@@ -53,9 +53,10 @@ class Racked
   end
   
   def get_mailboxes(size=50, offset=0)
-    check_options(options, [:domain, :customer_number, :mailbox_type])
-    size = options[:size] || 50
-    offset = options[:offset] || 0
+    # check_options(options, [:domain, :customer_number, :mailbox_type])
+    # size = options[:size] || 50
+    # offset = options[:offset] || 0
+    puts 'local!!'.red
     #get customer list
     response = @server.get  "/customers/#{@customer_number}/domains/#{@domain}/#{@mailbox_type}/mailboxes/?size=" + size.to_s + '&offset=' + offset.to_s, @server.json_format
     puts response.inspect
