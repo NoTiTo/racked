@@ -92,20 +92,21 @@ class Racked
     return response
   end
   
-  def get_last_login(options)
-    #TO DO: need to rethink
-    check_options(options, [:mailbox])
+  # get_mailbox_details now returns last login!!!
+  # def get_last_login(options)
+  #   #TO DO: need to rethink
+  #   check_options(options, [:mailbox])
     
-    self.account_details_for_soap(options[:account_details])
-    driver = UtilsSoapPort.new
-    # driver.wiredump_dev = STDOUT
+  #   # self.account_details_for_soap(options[:account_details])
+  #   driver = UtilsSoapPort.new
+  #   # driver.wiredump_dev = STDOUT
 
-    res = driver.GetUserLastLogin(@account_details[:resellerUsername], @account_details[:resellerPassword], @account_details[:hostName], @mailbox, @account_details[:lastlogin])
-    # if res[1].class == String && !res[1].empty?
-    #   puts "yes"
-    # end
-    return res
-  end
+  #   res = driver.GetUserLastLogin(options[:resellerUsername], options[:resellerPassword], options[:hostName], options[:mailbox], options[:lastlogin])
+  #   # if res[1].class == String && !res[1].empty?
+  #   #   puts "yes"
+  #   # end
+  #   return res
+  # end
 
   def create_mailbox(options)
     check_options(options, [:domain, :customer_number, :mailbox_type, :mailbox, :data_fields_hash])
