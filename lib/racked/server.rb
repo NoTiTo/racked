@@ -66,8 +66,8 @@ class Server
 #
 # HTTP Request Helpers
 # 
-  def make_request request, uri
-    response = Net::HTTP::start(uri.host, uri.port)  do |http|
+  def make_request(request, uri)
+    response = Net::HTTP::start(uri.host, uri.port, :use_ssl => uri.scheme == 'http')  do |http|
       begin
         http.request request
       rescue Exception => e
@@ -81,7 +81,7 @@ class Server
   end
   
   def full_uri url_string
-    URI.parse('http://' + @server + @version_prefix + url_string)
+    URI.parse('https://' + @server + @version_prefix + url_string)
   end
   
   def request_uri uri
@@ -101,7 +101,7 @@ class Server
   end
   
   def headers_auth_creds apiKey, secretKey
-    userAgent = 'Ruby Test Client'
+    userAgent = 'Rackspace Email API Client'
     timestamp = DateTime.now.strftime('%Y%m%d%H%M%S')
     
     data_to_sign = apiKey + userAgent + timestamp + secretKey
