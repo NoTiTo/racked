@@ -81,7 +81,7 @@ class Server
   end
   
   def full_uri url_string
-    URI.parse('https://' + @server + @version_prefix + url_string)
+    URI.parse('http://' + @server + @version_prefix + url_string)
   end
   
   def request_uri uri
