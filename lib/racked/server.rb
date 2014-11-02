@@ -66,32 +66,30 @@ class Server
 #
 # HTTP Request Helpers
 # 
-  def make_request(request, uri, limit = 10)
-    response = Net::HTTP::start(uri.host, uri.port)  do |http|
+  def make_request(request, uri)
+    response = Net::HTTP::start(uri.host, uri.port, :use_ssl => uri.scheme == 'https')  do |http|
       begin
-        response = Net::HTTP.get_response request
-        case response
-        when Net::HTTPSuccess then
-          return response
-        when Net::HTTPRedirection then
-          location = response['location']
-          warn "redirected to #{location}"
-          make_request(request, full_uri(location), limit - 1)
-        else
-          response.value
-      end
+        http.request request
       rescue Exception => e
         puts e.message
         puts e.backtrace.inspect
         retry
       end
     end
-    
-    response
+    case response
+    # when Net::HTTPSuccess then
+    #   return response
+    when Net::HTTPRedirection then
+      location = response['location']
+      warn "redirected to #{location}"
+      make_request(request, full_uri(location), limit - 1)
+    else
+      return response
+    end
   end
   
   def full_uri url_string
-    URI.parse('http://' + @server + @version_prefix + url_string)
+    URI.parse('https://' + @server + @version_prefix + url_string)
   end
   
   def request_uri uri
