@@ -66,17 +66,19 @@ class Server
 #
 # HTTP Request Helpers
 # 
-  def make_request(request, uri)
+  def make_request(request, uri, limit = 10)
     response = Net::HTTP::start(uri.host, uri.port)  do |http|
       begin
         response = http.request request
         case response
-        when Net::HTTPSuccess
-          then return response
-        when Net::HTTPRedirection
-          then fetch(response['location'], limit - 1)
+        when Net::HTTPSuccess then
+          return response
+        when Net::HTTPRedirection then
+          location = response['location']
+          warn "redirected to #{location}"
+          fetch(location, limit - 1)
         else
-          response.error!  
+          response.value
       end
       rescue Exception => e
         puts e.message
