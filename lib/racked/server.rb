@@ -69,7 +69,14 @@ class Server
   def make_request(request, uri)
     response = Net::HTTP::start(uri.host, uri.port)  do |http|
       begin
-        http.request request
+        response = http.request request
+        case response
+        when Net::HTTPSuccess
+          then return response
+        when Net::HTTPRedirection
+          then fetch(response['location'], limit - 1)
+        else
+          response.error!  
       rescue Exception => e
         puts e.message
         puts e.backtrace.inspect
