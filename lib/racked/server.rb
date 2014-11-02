@@ -77,6 +77,7 @@ class Server
           then fetch(response['location'], limit - 1)
         else
           response.error!  
+      end
       rescue Exception => e
         puts e.message
         puts e.backtrace.inspect
