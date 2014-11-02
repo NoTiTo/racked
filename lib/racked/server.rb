@@ -67,7 +67,7 @@ class Server
 # HTTP Request Helpers
 # 
   def make_request(request, uri)
-    response = Net::HTTP::start(uri.host, uri.port, :use_ssl => uri.scheme == 'http')  do |http|
+    response = Net::HTTP::start(uri.host, uri.port)  do |http|
       begin
         http.request request
       rescue Exception => e
