@@ -69,7 +69,7 @@ class Server
   def make_request(request, uri, limit = 10)
     response = Net::HTTP::start(uri.host, uri.port)  do |http|
       begin
-        response = http.request request
+        response = Net::HTTP.get_response request
         case response
         when Net::HTTPSuccess then
           return response
