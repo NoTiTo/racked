@@ -76,7 +76,7 @@ class Server
         when Net::HTTPRedirection then
           location = response['location']
           warn "redirected to #{location}"
-          Net::HTTP.get_response(location)
+          Net::HTTP.get_response(URI.parse(location))
         else
           response.value
       end
